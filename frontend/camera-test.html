@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            background: #000;
+            border-radius: 10px;
+            display: block;
+            margin: 20px auto;
+            transform: scaleX(-1);
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .status {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        .buttons {
+            text-align: center;
+        }
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            max-width: 640px;
+            margin: 20px auto;
+        }
+        .placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📹 Camera Test Tool</h1>
+        <p style="text-align: center;">Test if your camera works in the browser</p>
+
+        <div class="video-container">
+            <div class="placeholder" id="placeholder">📷</div>
+            <video id="video" autoplay playsinline muted></video>
+        </div>
+
+        <div class="buttons">
+            <button id="startBtn" onclick="startCamera()">🎥 Start Camera</button>
+            <button id="stopBtn" onclick="stopCamera()" disabled>⏹️ Stop Camera</button>
+        </div>
+
+        <div class="status" id="status">
+            <div class="info">ℹ️ Click "Start Camera" to begin testing...</div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 15px; background: #fef3c7; border-radius: 10px; color: #92400e;">
+            <strong>💡 Tips:</strong>
+            <ul style="margin: 10px 0;">
+                <li>When prompted, click <strong>"Allow"</strong> for camera access</li>
+                <li>Check the address bar for permission requests</li>
+                <li>Make sure no other app is using your camera</li>
+                <li>Try different browsers: Chrome works best</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const status = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const placeholder = document.getElementById('placeholder');
+        let stream = null;
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type;
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            status.innerHTML += `<div class="${className}">[${timestamp}] ${icon} ${message}</div>`;
+            status.scrollTop = status.scrollHeight;
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+
+        async function startCamera() {
+            try {
+                log('Requesting camera access...', 'info');
+
+                // Check if getUserMedia is supported
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    log('❌ getUserMedia is not supported in this browser!', 'error');
+                    log('Try using Chrome, Firefox, or Edge', 'error');
+                    return;
+                }
+
+                log('Browser supports getUserMedia ✓', 'success');
+
+                // Request camera access
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'user'
+                    }
+                });
+
+                log('Camera access granted! ✓', 'success');
+                log(`Stream active: ${stream.active}`, 'info');
+                log(`Video tracks: ${stream.getVideoTracks().length}`, 'info');
+
+                // Set stream to video element
+                video.srcObject = stream;
+
+                // Wait for metadata
+                video.onloadedmetadata = () => {
+                    log('Video metadata loaded ✓', 'success');
+                    log(`Video size: ${video.videoWidth}x${video.videoHeight}`, 'info');
+
+                    // Play video
+                    video.play().then(() => {
+                        log('Video playing! ✓✓✓', 'success');
+                        log('🎉 SUCCESS! You should see yourself on camera now!', 'success');
+                        placeholder.style.display = 'none';
+                        startBtn.disabled = true;
+                        stopBtn.disabled = false;
+                    }).catch(err => {
+                        log(`Error playing video: ${err.message}`, 'error');
+                    });
+                };
+
+            } catch (err) {
+                log(`❌ Error: ${err.name}`, 'error');
+                log(`Message: ${err.message}`, 'error');
+
+                // Provide helpful error messages
+                if (err.name === 'NotAllowedError') {
+                    log('You denied camera permission. Please allow and try again.', 'error');
+                    log('Click the camera icon in the address bar to change permissions.', 'info');
+                } else if (err.name === 'NotFoundError') {
+                    log('No camera found on this device.', 'error');
+                } else if (err.name === 'NotReadableError') {
+                    log('Camera is being used by another application.', 'error');
+                } else if (err.name === 'OverconstrainedError') {
+                    log('Camera does not support the requested settings.', 'error');
+                } else if (err.name === 'SecurityError') {
+                    log('Camera access is blocked by security policy.', 'error');
+                    log('Make sure you are using HTTPS or localhost.', 'info');
+                }
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                    log(`Stopped track: ${track.kind}`, 'info');
+                });
+                video.srcObject = null;
+                placeholder.style.display = 'block';
+                log('Camera stopped ✓', 'success');
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        // Check browser compatibility on load
+        window.addEventListener('load', () => {
+            log('Camera Test Tool loaded', 'success');
+            log(`Browser: ${navigator.userAgent}`, 'info');
+            log(`HTTPS: ${window.location.protocol === 'https:' ? 'Yes ✓' : 'No (required for camera)'}`, 'info');
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                log('✅ Browser supports camera access', 'success');
+            } else {
+                log('❌ Browser does NOT support camera access', 'error');
+                log('Please use Chrome, Firefox, or Edge', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

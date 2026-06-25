@@ -1,0 +1,109 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "close": "Close",
+    "success": "Success",
+    "error": "Error",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next"
+  },
+  "language": {
+    "english": "English",
+    "tamil": "தமிழ்",
+    "switchLanguage": "Switch Language"
+  },
+  "voter": {
+    "voterStatus": "Voter Status",
+    "castYourVote": "Cast Your Vote",
+    "registrationStatus": "Registration Status",
+    "votingStatus": "Voting Status",
+    "electionStatus": "Election Status",
+    "registered": "Registered",
+    "notRegistered": "Not Registered",
+    "canVote": "Can Vote",
+    "alreadyVoted": "Already Voted",
+    "active": "Active",
+    "ended": "Ended",
+    "pending": "Pending",
+    "votingNotStarted": "Voting has not started yet",
+    "votingEnded": "Voting period has ended",
+    "votingActive": "Voting is currently active",
+    "notRegisteredWarning": "You are not registered to vote. Please contact the election administrator.",
+    "voteSuccessfullyCast": "Vote Successfully Cast",
+    "thankYou": "Thank you for participating in the election",
+    "noCandidates": "No candidates available",
+    "candidateId": "Candidate ID"
+  },
+  "voting": {
+    "regularVote": "Regular Vote",
+    "voteWithSign": "Vote with Sign",
+    "castVote": "Cast Vote",
+    "castingVote": "Casting Vote...",
+    "selectCandidate": "Please select a candidate",
+    "voteSuccess": "Vote cast successfully!",
+    "instructions": {
+      "encrypted": "Your vote will be encrypted and stored securely",
+      "blockchain": "A hash of your vote will be recorded on the blockchain",
+      "onceOnly": "You can only vote once per election",
+      "noChange": "Your vote cannot be changed after submission"
+    }
+  },
+  "signVoting": {
+    "howToVote": "How to vote with sign language:",
+    "step1": "1️⃣ Show finger sign for your candidate (1, 2, or 3)",
+    "step2": "2️⃣ Upload or capture an image of your hand sign",
+    "step3": "3️⃣ Click \"Detect Sign\" to verify your choice",
+    "step4": "4️⃣ Confirm and cast your vote",
+    "candidateSignNumbers": "Candidate Sign Numbers:",
+    "sign": "Sign",
+    "uploadHandSign": "Upload Hand Sign Image",
+    "imagePreview": "Image Preview",
+    "detectionSuccessful": "Detection Successful!",
+    "detectedSign": "Detected Sign",
+    "confidence": "Confidence",
+    "candidate": "Candidate",
+    "detectSign": "Detect Sign",
+    "detecting": "Detecting...",
+    "castVoteWithSign": "Cast Vote with Sign",
+    "castingVote": "Casting Vote...",
+    "signInstructions": {
+      "clearImage": "Ensure your hand sign is clear and well-lit",
+      "holdFingers": "Hold fingers up (1, 2, or 3) corresponding to your choice",
+      "minConfidence": "Detection must have at least 50% confidence",
+      "onceOnly": "You can only vote once per election"
+    },
+    "voteSuccess": "Vote cast successfully using sign language!",
+    "uploadImageFirst": "Please upload an image first",
+    "detectFirst": "Please detect the sign first",
+    "invalidFileType": "Invalid file type. Please upload PNG or JPEG image.",
+    "fileTooLarge": "File size too large. Maximum 5MB allowed."
+  },
+  "voteReceipt": {
+    "title": "Vote Receipt",
+    "transactionHash": "Transaction Hash",
+    "blockNumber": "Block Number",
+    "voteHash": "Vote Hash",
+    "timestamp": "Timestamp",
+    "voteMethod": "Vote Method"
+  },
+  "auth": {
+    "connectWallet": "Connect Wallet",
+    "walletConnected": "Wallet Connected",
+    "disconnectWallet": "Disconnect Wallet",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register"
+  },
+  "admin": {
+    "adminPanel": "Admin Panel",
+    "voters": "Voters",
+    "candidates": "Candidates",
+    "results": "Results",
+    "statistics": "Statistics",
+    "auditLogs": "Audit Logs"
+  }
+}
